@@ -14,7 +14,7 @@ preloader.prototype = {
         
         this.game.load.image("bg", "assets/usa/images/usa.png");
         this.game.load.image("button", "assets/usa/images/button.png");
-        this.game.load.image("gear", "assets/usa/images/gearBtn.png");
+        this.game.load.image("gear", "assets/usa/images/gearBtn2.png");
         this.game.load.image("ok", "assets/usa/images/ok.png");
         this.game.load.image("musicBtn", "assets/usa/images/musicBtn.png");
         this.game.load.image("panel", "assets/usa/images/panel.png");
