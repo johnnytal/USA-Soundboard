@@ -56,7 +56,7 @@ gameMain.prototype = {
 	        } catch(e){}   
 		}, 1000);
 		
-		//initAd();
+		initAd();
     }
 };
 
