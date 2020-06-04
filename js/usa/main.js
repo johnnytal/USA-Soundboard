@@ -7,8 +7,6 @@ var gameMain = function(game){
     sounds = [];
     musics = [];
     
-    theButton = null;
-    
     soundButtons = [];
     musicButtons = [];
  
@@ -33,13 +31,13 @@ gameMain.prototype = {
         modal = new gameModal(game);
         
         bg = this.add.image(0, 0, 'bg');
-        bg.alpha = 0.75;
+        bg.alpha = 0.72;
 
         createSoundBtns();
         createMusicBtns();
 
-        menuBtn = this.add.sprite(595, 870, 'gear');
-        menuBtn.scale.set(0.9, 0.52);
+        menuBtn = this.add.sprite(10, 882, 'gear');
+        menuBtn.alpha = 0.85;
         menuBtn.inputEnabled = true;
         menuBtn.events.onInputDown.add(openOptions, this);
         
@@ -56,23 +54,16 @@ gameMain.prototype = {
 	        try{
 	            window.plugins.insomnia.keepAwake();
 	        } catch(e){}   
-		}, 2000);
+		}, 1000);
 		
-		initAd();
+		//initAd();
     }
 };
 
-function playSound(item, kb){	
+function playSound(item){	
 	var place;
-	
-	if (kb == 'kb'){
-		place = item;
-		theButton = keyNotesArray[item];
-	}
-	else{
-		place = soundButtons.indexOf(item);
-		theButton = soundButtons[place];
-	}
+
+	place = soundButtons.indexOf(item);
 	
 	var sprite = soundButtons[place];
 	var sound = sounds[place];
@@ -133,6 +124,11 @@ function playMusic(item){
    	 			musicButtons[m].tint = 0xffffff;
    	 		}
    	 	}
+   	 	
+   	 	var rnd = game.rnd.integerInRange(0, 4);
+   	 	if (rnd == 2){ 	 	 	
+			if(AdMob) AdMob.showInterstitial();
+	  	}
     }
     else{
     	musics[place].stop();
@@ -198,7 +194,7 @@ function openOptions(_this){
                 }
             },
             
-            { type: "image", content: "ok", offsetY: 100, offsetX: 300, contentScale: 0.75,
+            { type: "image", content: "ok", offsetY: 100, offsetX: 300,
                 callback: function () {
                     modal.hideModal('options');
                     _this.inputEnabled = true;
@@ -242,7 +238,7 @@ function createSoundBtns(){
 	        
     for(b = 0; b < SOUND_BUTTONS_N; b++){
     	soundButtons[b] = soundBtnsGroup.create(28 + (275 * (b%3)), 15 + (Math.floor(b/3) * 220), 'person0' + b);
-    	soundButtons[b].alpha = 0.89;
+    	soundButtons[b].alpha = 0.94;
     	soundButtons[b].inputEnabled = true;
 
 		soundButtons[b].events.onInputDown.add(playSound, this);
@@ -266,26 +262,20 @@ function createMusicBtns(){
 	musicBtnsGroup = game.add.physicsGroup(Phaser.Physics.ARCADE);
 	
     for(m = 0; m < MUSIC_BUTTONS_N; m++){
-    	musicButtons[m] = musicBtnsGroup.create(15 + (280 * m), 960, 'musicBtn');
-    	musicButtons[m].alpha = 0.87;
+    	musicButtons[m] = musicBtnsGroup.create(5 + (280 * m), 975, 'musicBtn');
     	musicButtons[m].inputEnabled = true;
-    	musicButtons[m].scale.set(1, 0.8);
 
     	musicButtons[m].events.onInputDown.add(playMusic, this);        
     }
  
     for(t = 0; t < MUSIC_BUTTONS_N; t++){
     	musicText[t] = game.add.text(0, 0, textsMusicText[t], {
-        	font: '56px ' + font, fill: 'maroon', align: 'center', stroke:'red', strokeThickness: 2
+        	font: '48px ' + font, fill: 'white', align: 'left', stroke:'red', strokeThickness: 1
    		});
    		
-   		musicText[t].x = musicButtons[t].x + musicButtons[t].width / 2 - musicText[t].width / 2;
-   		musicText[t].y = musicButtons[t].y + musicButtons[t].height / 2 - musicText[t].height / 2 + 10;
+   		musicText[t].x = musicButtons[t].x + musicButtons[t].width / 2 - musicText[t].width / 2 - 48;
+   		musicText[t].y = musicButtons[t].y + musicButtons[t].height / 2 - musicText[t].height / 2 + 2;
     }
-    
-	musicAddText = game.add.text(20, 895, 'ADD PATRIOTIC MUSIC:', {
-		font: '48px ' + font, fill: 'lightblue', align: 'center', stroke:'black', strokeThickness: 5
-	});
 }
 
 function loadSounds(){
@@ -316,10 +306,18 @@ function loadSounds(){
     musics = [sfxMusic, sfxMusic2, sfxMusic3];
 }
 
+
 function initAd(){
- 	if(AdMob) AdMob.createBanner({
-  	  	adId: 'ca-app-pub-9795366520625065/7045597764',
-  	  	position: AdMob.AD_POSITION.TOP_CENTER,
-  	  	autoShow: true
-  	});
+	admobid = {
+      banner: 'ca-app-pub-9795366520625065/6106370553',
+      interstitial: 'ca-app-pub-9795366520625065/7620715086'
+    };
+    
+    if(AdMob) AdMob.createBanner({
+	    adId: admobid.banner,
+	    position: AdMob.AD_POSITION.TOP_CENTER,
+    	autoShow: true 
+	});
+	
+	if(AdMob) AdMob.prepareInterstitial( {adId:admobid.interstitial, autoShow:false} );
 }

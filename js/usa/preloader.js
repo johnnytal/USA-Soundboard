@@ -13,7 +13,6 @@ preloader.prototype = {
         });
         
         this.game.load.image("bg", "assets/usa/images/usa.png");
-        this.game.load.image("button", "assets/usa/images/button.png");
         this.game.load.image("gear", "assets/usa/images/gearBtn2.png");
         this.game.load.image("ok", "assets/usa/images/ok.png");
         this.game.load.image("musicBtn", "assets/usa/images/musicBtn.png");
@@ -45,15 +44,13 @@ preloader.prototype = {
         this.game.load.audio('usa8', 'assets/usa/audio/obama.ogg');
         this.game.load.audio('usa11', 'assets/usa/audio/truman.ogg');
 
-        this.game.load.audio('music1', 'assets/usa/audio/music1.ogg');
-        this.game.load.audio('music2', 'assets/usa/audio/music2.ogg');
-        this.game.load.audio('music3', 'assets/usa/audio/music3.ogg');
+        this.game.load.audio('music1', 'assets/usa/audio/music1.mp3');
+        this.game.load.audio('music2', 'assets/usa/audio/music2.mp3');
+        this.game.load.audio('music3', 'assets/usa/audio/music3.mp3');
     },
     
     create: function(){
         this.game.state.start("Game"); 
-        
-        initAd(); 
     }
 };
 
